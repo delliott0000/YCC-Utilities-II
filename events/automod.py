@@ -64,6 +64,7 @@ class AutoModerator(commands.Cog):
         await self.moderate_message(after)
 
     async def moderate_message(self, message: Message):
+        content = message.content
         author = message.author
         if not message.guild or message.guild.id != self.bot.guild_id or author.bot:
             return
@@ -75,7 +76,7 @@ class AutoModerator(commands.Cog):
         else:
             return
 
-        urls = findall(r'(https?://\S+)', message.content)
+        urls = findall(r'(https?://\S+)', content)
         domains = []
 
         for url in urls:
@@ -139,7 +140,7 @@ class AutoModerator(commands.Cog):
         msg_embed.set_author(icon_url=self.bot.user.avatar or self.bot.user.default_avatar, name='Message Deleted')
         msg_embed.set_thumbnail(url=author.avatar or author.default_avatar)
         msg_embed.set_footer(text=f'User ID: {author.id}')
-        msg_embed.add_field(name='Message Content', value=message.content, inline=False)
+        msg_embed.add_field(name='Message Content', value=content, inline=False)
         msg_embed.add_field(name='Keyword:', value=f'**`{keyword}`**', inline=False)
 
         try:
