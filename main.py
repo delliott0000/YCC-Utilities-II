@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import os
 import asyncio
 import logging
+from typing import TYPE_CHECKING
 from time import time
 from datetime import timedelta
 from traceback import format_exception as format_error
@@ -8,21 +11,17 @@ from traceback import format_exception as format_error
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 try:
-    from discord.ui import View
-    from discord.abc import Messageable
     from discord.utils import MISSING, utcnow
     from discord.ext import commands, tasks
     from discord import (
         __version__ as __discord__,
         Intents,
-        Message,
         HTTPException,
         LoginFailure,
         PrivilegedIntentsRequired,
         Activity,
         ActivityType,
         User,
-        Guild,
         Member,
         Embed,
         Color
@@ -43,6 +42,11 @@ try:
 except ModuleNotFoundError as unknown_import:
     logging.fatal(f'Missing required dependencies - {unknown_import}.')
     raise SystemExit()
+
+if TYPE_CHECKING:
+    from discord import Guild, Message
+    from discord.abc import Messageable
+    from discord.ui import View
 
 
 class CustomBot(commands.Bot):
